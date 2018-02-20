@@ -25,14 +25,14 @@ var connection = mysql.createConnection({
   function getItems() {
     connection.query("SELECT * FROM products", function(err, results) {
         if (err) throw err;
-        console.log('=================Items in Store==================');
+        console.log('====Welcome to Bamazon!===');
 
         for(i=0;i<results.length;i++){
           console.log('Item ID:' + results[i].item_id + ' Product Name: ' + results[i].product_name + ' Price: ' + '$' + results[i].price + '(Quantity left: ' + results[i].stock_quantity + ')')
         }
         console.log('=================================================');   
 
-        
+
 // showing the user which items they can buy 
         inquirer
           .prompt([
