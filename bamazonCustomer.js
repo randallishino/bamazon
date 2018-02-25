@@ -57,24 +57,31 @@ var connection = mysql.createConnection({
 
     // capturing user input
     .then(function(answer) {
-        console.log(answer.choice);
-        console.log(answer.quantity);
+
+      // console.log(answer.choice);
+      // console.log(answer.quantity);
+
 
       var item = answer.choice;
       var quantity = answer.quantity;
 
+      // grabbing a product name with item as an argument
       connection.query('SELECT * FROM Products WHERE product_name = ?', item, function(error, response) {
         if (error) { console.log(error) };
-        console.log(response[0].stock_quantity);
+        // console.log(response[0].stock_quantity);
 
+
+        // checking available stock
         if (quantity <= response[0].stock_quantity){
           console.log("You've successfully placed your order!");
 
+          // the item is checked and updates quantity to mysql
           connection.query('UPDATE products SET ? WHERE ?', [{
             stock_quantity: response[0].stock_quantity - quantity
           },{
             product_name: item
           }], 
+          console.log("Quantity successfully updated"),
           function(err, res){
             if (err){
               console.log(err);
