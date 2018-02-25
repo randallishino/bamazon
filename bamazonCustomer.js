@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var inquirer = require('inquirer');
 
 
-// connection for mysql
+// info for mysql connection
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -25,7 +25,7 @@ var connection = mysql.createConnection({
   function getItems() {
     connection.query("SELECT * FROM products", function(err, results) {
         if (err) throw err;
-        console.log('====Welcome to Bamazon!===');
+        console.log('***********Welcome to Bamazon!***********');
 
         for(i=0;i<results.length;i++){
           console.log('Item ID:' + results[i].item_id + ' Product Name: ' + results[i].product_name + ' Price: ' + '$' + results[i].price + '(Quantity left: ' + results[i].stock_quantity + ')')
@@ -38,7 +38,7 @@ var connection = mysql.createConnection({
           .prompt([
             {
               name: "choice",
-              type: "list",
+              type: "input",
               choices: function() {
                 var options = [];
                 for(i=0;i<results.length;i++){
@@ -46,7 +46,7 @@ var connection = mysql.createConnection({
                   }
                   return options;
             },
-            message: "Please list the ID number of the item you'd like to purchase"
+            message: "Please list the name of the item you'd like to purchase"
         },
         {
         name: "quantity",
@@ -54,13 +54,34 @@ var connection = mysql.createConnection({
         message: "How much would you like to buy?"
         },
     ])
+
+    // capturing user input
     .then(function(answer) {
-        var chosenItem;
-        for (var i = 0; i < results.length; i++) {
-          if (results[i].product_name === answer.choices) {
-            chosenItem = results[i];
-          }
-        }
-    })
-})
-  };
+        console.log(answer.choice);
+        console.log(answer.quantity);
+
+      var item = answer.choice;
+      var quantity = answer.quantity;
+
+      connection.query('SELECT * FROM Products WHERE product_name = ?', item, function(error, response) {
+        if (error) { console.log(error) };
+        console.log(response[0].stock_quantity);
+
+        if (quantity <= response[0].stock_quantity){
+          console.log("You've successfully placed your order!");
+
+          connection.query('UPDATE products SET ? WHERE ?', [{
+            stock_quantity: response[0].stock_quantity - quantity
+          },{
+            product_name: item
+          }], 
+          function(err, res){
+            if (err){
+              console.log(err);
+            }
+          });
+        };
+      });
+    });
+  })
+};
