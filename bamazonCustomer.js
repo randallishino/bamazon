@@ -1,7 +1,7 @@
 // requiring packages
 var mysql = require('mysql');
 var inquirer = require('inquirer');
-
+var Table = require('cli-table');
 
 // info for mysql connection
 var connection = mysql.createConnection({
@@ -23,13 +23,28 @@ var connection = mysql.createConnection({
 
 // function to grab items from database table
   function getItems() {
+
+// instantiating a table to display the storefront
+    var table = new Table({
+      head: ['item id', 'Product Name', 'Department', 'Price', 'Quantity']
+    });
+
+    // selecting the table products
     connection.query("SELECT * FROM products", function(err, results) {
         if (err) throw err;
+        console.log('=================================================');   
         console.log('***********Welcome to Bamazon!***********');
 
+        // looping over the items and pushing data into table
         for(i=0;i<results.length;i++){
-          console.log('Item ID:' + results[i].item_id + ' Product Name: ' + results[i].product_name + ' Price: ' + '$' + results[i].price + '(Quantity left: ' + results[i].stock_quantity + ')')
+          table.push(
+            [results[i].item_id, results[i].product_name, results[i].department_name, results[i].price, results[i].stock_quantity]
+          );
         }
+
+        // converting the table into a string format
+        console.log(table.toString());
+
         console.log('=================================================');   
 
 
@@ -57,11 +72,8 @@ var connection = mysql.createConnection({
 
     // capturing user input
     .then(function(answer) {
-
       // console.log(answer.choice);
       // console.log(answer.quantity);
-
-
       var item = answer.choice;
       var quantity = answer.quantity;
 
@@ -73,7 +85,11 @@ var connection = mysql.createConnection({
 
         // checking available stock
         if (quantity <= response[0].stock_quantity){
+
+          var price = response[0].price * quantity;
           console.log("You've successfully placed your order!");
+          console.log("Your total cost for today is " + price + " dollars");
+          console.log("------------------------------------");
 
           // the item is checked and updates quantity to mysql
           connection.query('UPDATE products SET ? WHERE ?', [{
@@ -86,9 +102,14 @@ var connection = mysql.createConnection({
             if (err){
               console.log(err);
             }
+
+            else {
+              console.log("Sorry, insufficient quantity!");
+              console.log("Please select another item");
+            }
           });
         };
       });
     });
-  })
+  });
 };
