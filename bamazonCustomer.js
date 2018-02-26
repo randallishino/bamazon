@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
   
     user: "root",
   
-    password: "",
+    password: "lakers",
     database: "bamazon"
   });
 
@@ -105,7 +105,7 @@ var connection = mysql.createConnection({
 
             else {
               console.log("Sorry, insufficient quantity!");
-              console.log("Please select another item");
+              console.log("Please choose a different quantity or a different item")
             }
           });
         };
