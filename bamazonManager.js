@@ -40,6 +40,10 @@ var connection = mysql.createConnection({
         else if(answer.choices === "view low inventory") {
             lowInventory();
         }
+        else if(answer.choices === "add to inventory") {
+            addInventory();
+            displayTable();
+        }
     });
 }
   };
@@ -79,6 +83,7 @@ function lowInventory() {
     connection.query('SELECT * FROM Products WHERE stock_quantity < 5', function(err,results) {
 
         console.log("Here are the low inventory products");
+        console.log("-----------------------------------");
         var table = new Table({
             head: ['item id', 'Product Name', 'Department', 'Price', 'Quantity']
           });
@@ -93,3 +98,34 @@ function lowInventory() {
     });
 };
 
+
+function addInventory() {
+    inquirer
+    .prompt([
+      { name: "inventory",
+        type: "input",
+        message: "Please select an item to add inventory"
+    },
+    {
+    name: "quantity",
+    type: "input",
+    message: "How much would you like to add?"
+    }
+])
+.then(function(answer) {
+    var item = answer.inventory;
+    var quantity = answer.quantity;
+    console.log(quantity);
+
+    connection.query('SELECT * FROM Products WHERE product_name = ?', item, function(error, response) {
+        if (error) { console.log(error) };
+        connection.query('UPDATE products SET ? WHERE ?', [{
+            stock_quantity: response[0].stock_quantity + quantity
+        },{
+          product_name: item
+        }], 
+    )
+    console.log("You have successfully added inventory");
+});
+})
+};
