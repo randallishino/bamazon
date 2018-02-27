@@ -30,7 +30,7 @@ var connection = mysql.createConnection({
           { name: "choices",
             type: "list",
             choices: ["view products for sale","view low inventory","add to inventory","add new product"],
-            message: "Hi manager, please select an option"
+            message: "Hi manager, what would you like to do today?"
         },
     ])
     .then(function(answer) {
@@ -98,7 +98,7 @@ function lowInventory() {
     });
 };
 
-
+// adding more stock to an item
 function addInventory() {
     inquirer
     .prompt([
