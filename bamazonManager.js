@@ -99,6 +99,7 @@ function lowInventory() {
 };
 
 // adding more stock to an item
+// very buggy! it adds to inventory but it doesn't concatenate the value
 function addInventory() {
     inquirer
     .prompt([
