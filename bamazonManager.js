@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
   
     user: "root",
   
-    password: "lakers",
+    password: "",
     database: "bamazon"
   });
 
@@ -102,7 +102,7 @@ function lowInventory() {
 function addInventory() {
     inquirer
     .prompt([
-      { name: "inventory",
+      { name: "item",
         type: "input",
         message: "Please select an item to add inventory"
     },
@@ -113,18 +113,21 @@ function addInventory() {
     }
 ])
 .then(function(answer) {
-    var item = answer.inventory;
+    var item = answer.item;
     var quantity = answer.quantity;
     console.log(quantity);
 
     connection.query('SELECT * FROM Products WHERE product_name = ?', item, function(error, response) {
         if (error) { console.log(error) };
+
+        if (item) {
         connection.query('UPDATE products SET ? WHERE ?', [{
-            stock_quantity: response[0].stock_quantity + quantity
+            stock_quantity: quantity + response[0].stock_quantity
         },{
           product_name: item
         }], 
     )
+}
     console.log("You have successfully added inventory");
 });
 })
