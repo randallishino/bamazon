@@ -1,0 +1,26 @@
+{
+  "name": "mysql",
+  "version": "1.0.0",
+  "description": "mysql inquirer hw",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "console.log(\"hi\");"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/randallishino/bamazon.git"
+  },
+  "keywords": [
+    "hw10",
+    "bamazon"
+  ],
+  "author": "randall ishino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/randallishino/bamazon/issues"
+  },
+  "homepage": "https://github.com/randallishino/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^5.1.0"
+  }
+}
