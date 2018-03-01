@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
   
     user: "root",
   
-    password: "lakers",
+    password: "",
     database: "bamazon"
   });
 
@@ -47,7 +47,6 @@ var connection = mysql.createConnection({
     });
 }
   };
-
 
 
 // displaying the storefront 
@@ -99,7 +98,6 @@ function lowInventory() {
 };
 
 // adding more stock to an item
-// very buggy! it adds to inventory but it doesn't concatenate the value
 function addInventory() {
     inquirer
     .prompt([
@@ -115,7 +113,7 @@ function addInventory() {
 ])
 .then(function(answer) {
     var item = answer.item;
-    var quantity = answer.quantity;
+    var quantity = parseInt(answer.quantity);
     console.log(quantity);
 
     connection.query('SELECT * FROM Products WHERE product_name = ?', item, function(error, response) {
