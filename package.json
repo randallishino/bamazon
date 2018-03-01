@@ -1,10 +1,10 @@
 {
-  "name": "mysql",
+  "name": "bamazon",
   "version": "1.0.0",
-  "description": "mysql inquirer hw",
+  "description": "hw 10 ",
   "main": "bamazonCustomer.js",
   "scripts": {
-    "test": "console.log(\"hi\");"
+    "test": "console.log(\"hello\");"
   },
   "repository": {
     "type": "git",
@@ -12,7 +12,8 @@
   },
   "keywords": [
     "hw10",
-    "bamazon"
+    "node",
+    "mysql"
   ],
   "author": "randall ishino",
   "license": "ISC",
@@ -21,6 +22,8 @@
   },
   "homepage": "https://github.com/randallishino/bamazon#readme",
   "dependencies": {
-    "inquirer": "^5.1.0"
+    "cli-table": "^0.3.1",
+    "inquirer": "^5.1.0",
+    "mysql": "^2.15.0"
   }
 }
