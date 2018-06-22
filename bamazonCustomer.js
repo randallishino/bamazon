@@ -45,10 +45,14 @@ var connection = mysql.createConnection({
         // converting the table into a string format
         console.log(table.toString());
 
-        console.log('=================================================');   
+        console.log('=================================================');  
+        displayChoices(results);
+      });
+    }; 
 
 
 // showing the user which items they can buy 
+function displayChoices(result) {
         inquirer
           .prompt([
             {
@@ -56,8 +60,8 @@ var connection = mysql.createConnection({
               type: "input",
               choices: function() {
                 var options = [];
-                for(i=0;i<results.length;i++){
-                    options.push('Item ID: ' + results[i].item_id + ' Product Name: ' + results[i].product_name + ' Price: ' + '$' + results[i].price);
+                for(i=0;i<result.length;i++){
+                    options.push('Item ID: ' + result[i].item_id + ' Product Name: ' + result[i].product_name + ' Price: ' + '$' + result[i].price);
                   }
                   return options;
             },
@@ -107,9 +111,8 @@ var connection = mysql.createConnection({
               console.log("Sorry, insufficient quantity!");
               console.log("Please choose a different quantity or a different item")
             }
-          });
-        };
-      });
-    });
-  });
-};
+          }
+        )}
+      })
+    })
+  };
