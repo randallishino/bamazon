@@ -1,4 +1,5 @@
 // requiring packages
+require('dotenv').config();
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 var Table = require('cli-table');
@@ -43,6 +44,9 @@ var connection = mysql.createConnection({
         else if(answer.choices === "add to inventory") {
             addInventory();
             displayTable();
+        }
+        else if(answer.choices === "add new product") {
+            addItem();
         }
     });
 }
@@ -129,5 +133,49 @@ function addInventory() {
 }
     console.log("You have successfully added inventory");
 });
+})
+};
+
+function addItem() {
+    inquirer
+    .prompt([
+      { name: "item",
+        type: "input",
+        message: "Please type desired item to be added"
+    },
+    {
+    name: "quantity",
+    type: "input",
+    message: "How much would you like to add?"
+    },
+    {
+    name: "department",
+    type:"input",
+    message:"Which department will it be located?"
+    },
+    {
+        name:"price",
+        type:"input",
+        message:"How much will it cost?"
+    }
+]).then(function(answer) {
+    var queryStr = 'INSERT INTO products SET ?';
+
+    // Add new product to the db
+    connection.query(queryStr, {
+        stock_quantity:answer.quantity,
+        product_name: answer.item,
+        department_name: answer.department,
+        price: answer.price 
+    }
+        , function (error, results) {
+        if (error) throw error;
+
+        console.log('New product has been added to the inventory under Item ID ' + results.insertId + '.');
+        console.log("\n---------------------------------------------------------------------\n");
+
+        // End the database connection
+        connection.end();
+    });
 })
 };
