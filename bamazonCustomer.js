@@ -1,8 +1,8 @@
 // requiring packages
+require('dotenv').config()
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 var Table = require('cli-table');
-
 // info for mysql connection
 var connection = mysql.createConnection({
     host: "localhost",
@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
   
     user: "root",
   
-    password: "",
+    password:process.env.PASSWORD,
     database: "bamazon"
   });
 
